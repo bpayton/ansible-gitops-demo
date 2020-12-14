@@ -38,8 +38,7 @@
             image_id: "{{ image }}"
             instance_type: t2.micro
             region: "{{ region }}"
-            tags:
-              app: ansible-devops-demo-jpc
+            tags: "{{ instance_tags }}"
           
       tags: ['never', 'provision']
 
