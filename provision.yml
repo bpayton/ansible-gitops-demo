@@ -4,7 +4,7 @@
   connection: local
   gather_facts: false
   vars:
-    key_name: ansibledemo
+    aws_key_name: jerrys-key-pair
     image: ami-096fda3c22c1c990a  # use for personal account: ami-07128bd973a9c4e0b
     id: "demo-app"
     sec_group: "{{ id }}-sec"
@@ -32,15 +32,14 @@
             state: present
             aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
             aws_secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
-            key_name: ansibledemo
+            key_name: "{{ aws_key_name }}"
             name: "{{ id }}"
             security_group: default
             image_id: "{{ image }}"
             instance_type: t2.micro
             region: "{{ region }}"
             tags:
-              Environment: Testing
-              app: ansible-devops-demo-jc
+              app: ansible-devops-demo-jpc
           
       tags: ['never', 'provision']
 
@@ -53,7 +52,6 @@
             aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
             aws_secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
             filters:
-              tag:Environment: Testing
-              app: ansible-devops-demo-jc
+              app: ansible-devops-demo-jpc
 
       tags: ['never', 'deprovision']
