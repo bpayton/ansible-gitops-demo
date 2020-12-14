@@ -40,6 +40,7 @@
             region: "{{ region }}"
             tags:
               Environment: Testing
+              app: ansible-devops-demo-jc
           
       tags: ['never', 'provision']
 
@@ -53,5 +54,6 @@
             aws_secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
             filters:
               tag:Environment: Testing
+              app: ansible-devops-demo-jc
 
       tags: ['never', 'deprovision']
