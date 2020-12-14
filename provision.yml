@@ -6,7 +6,7 @@
   vars:
     aws_key_name: jerrys-key-pair
     image: ami-096fda3c22c1c990a  # use for personal account: ami-07128bd973a9c4e0b
-    id: "demo-app"
+    id: "github-demo-app-{{ name }}"
     sec_group: "{{ id }}-sec"
   tasks:
     - name: Get Instance facts 

@@ -1,4 +1,5 @@
 ---
 region: us-east-1 # for personal acct: us-east-2
+name: Jerry
 instance_tags: 
   app: ansible-devops-demo-jpc
