@@ -1,6 +1,6 @@
 ---
 - name: Deploy application
-  hosts: tag_Environment_Testing
+  hosts: "{{ hostvars['localhost']['aws_instance_id'] }}"
   become: yes
   gather_facts: yes
   tasks:

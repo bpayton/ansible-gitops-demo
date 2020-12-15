@@ -5,7 +5,7 @@
   gather_facts: false
   vars:
     aws_key_name: jcorum
-    image: ami-096fda3c22c1c990a  # use for personal account: ami-07128bd973a9c4e0b
+    image: ami-096fda3c22c1c990a
     id: "github-demo-app-{{ name }}"
     sec_group: "{{ id }}-sec"
   tasks:
@@ -38,7 +38,13 @@
             image_id: "{{ image }}"
             instance_type: t2.micro
             region: "{{ region }}"
-            tags: "{{ instance_tags }}"
+            tags: "{{ app }}"
+          register: ec2_instance 
+
+        - name: Register instance ID to localhost facts
+          set_fact:
+            aws_instance_id: "{{ ec2_instance.instances[0].instance_id }}"
+            cacheable: yes
           
       tags: ['never', 'provision']
 
@@ -51,6 +57,6 @@
             aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
             aws_secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
             filters:
-              app: ansible-devops-demo-jpc
+              app: "{{ app }}"
 
       tags: ['never', 'deprovision']

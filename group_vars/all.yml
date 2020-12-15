@@ -1,5 +1,7 @@
 ---
-region: us-east-1 # for personal acct: us-east-2
+# make sure to update this with your name or something unique to you
 name: Jerry
-instance_tags: 
-  app: ansible-devops-demo-jpc
+
+# static, please don't change these unless you want a challenge
+region: us-east-1 
+app: ansible-devops-demo-{{ name }}
