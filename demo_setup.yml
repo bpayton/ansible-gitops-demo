@@ -1,0 +1,129 @@
+--- 
+- name: Setup Demo Environment
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: import login credentials for Tower
+      include_vars: "{{lookup('first_found', login_info)}}"
+      vars:
+        login_info:
+          - 'private.yml'
+          - 'login_info.yml'
+
+    - name: Create Ansible Git Ops demo Tower Project
+      awx.awx.tower_project:
+        name: Git Ops
+        state: present
+        organization: Default 
+        tower_username: "{{ tower_username }}"
+        tower_password: "{{ tower_password }}"
+        tower_host: https://localhost
+        tower_verify_ssl: false
+        scm_type: git 
+        scm_url: https://github.com/corumj/ansible-gitops-demo.git
+        scm_update_on_launch: yes 
+
+    - name: Create AWS Credential 
+      awx.awx.tower_credential:
+        state: present
+        name: AWS
+        description: AWS Credential from saml 
+        organization: Default 
+        credential_type: aws
+        inputs:
+          AWS_ACCESS_KEY_ID: "{{ AWS_ACCESS_KEY_ID }}"
+          AWS_SECRET_ACCESS_KEY: "{{ AWS_SECRET_ACCESS_KEY }}"
+          AWS_SECURITY_TOKEN: "{{ AWS_SECURITY_TOKEN }}"
+        tower_username: "{{ tower_username }}"
+        tower_password: "{{ tower_password }}"
+        tower_host: https://localhost
+        tower_verify_ssl: false
+
+    - name: Create AWS Machine Credential 
+      awx.awx.tower_credential:
+        state: present 
+        name: AWS Machine 
+        description: AWS Machine Credential 
+        organization: Default 
+        credential_type: machine 
+        inputs:
+          username: ec2-user 
+          ssh_key_data: "{{ ssh_key }}"
+        tower_username: "{{ tower_username }}"
+        tower_password: "{{ tower_password }}"
+        tower_host: https://localhost
+        tower_verify_ssl: false
+
+    - name: Create AWS Inventory 
+      awx.awx.tower_inventory: 
+        name: AWS
+        description: AWS Inventory 
+        organization: Default 
+        state: present 
+        tower_username: "{{ tower_username }}"
+        tower_password: "{{ tower_password }}"
+        tower_host: https://localhost
+        tower_verify_ssl: false
+
+    - name: Create AWS Inventory Source
+      awx.awx.tower_inventory_source:
+        state: present  
+        name: AWS Inventory 
+        description: AWS inventory source 
+        inventory: AWS  
+        credential: AWS  
+        overwrite: True  
+        update_on_launch: True  
+        source: ec2  
+        tower_username: "{{ tower_username }}"
+        tower_password: "{{ tower_password }}"
+        tower_host: https://localhost
+        tower_verify_ssl: false
+
+    - name: Create provisioning template
+      awx.awx.tower_job_template:
+        name: "Provision EC2 Instance"
+        job_type: "run"
+        inventory: "AWS"
+        project: "Git Ops"
+        playbook: "provision.yml"
+        credentials: 
+          - "AWS"
+        job_tags: provision
+        state: "present"
+        tower_username: "{{ tower_username }}"
+        tower_password: "{{ tower_password }}"
+        tower_host: https://localhost
+        tower_verify_ssl: false
+
+    - name: Create deprovisioning template
+      awx.awx.tower_job_template:
+        name: "Provision EC2 Instance"
+        job_type: "run"
+        inventory: "AWS"
+        project: "Git Ops"
+        playbook: "provision.yml"
+        credentials: 
+          - "AWS"
+        job_tags: deprovision
+        state: "present"
+        tower_username: "{{ tower_username }}"
+        tower_password: "{{ tower_password }}"
+        tower_host: https://localhost
+        tower_verify_ssl: false
+
+    - name: Create build template
+      awx.awx.tower_job_template:
+        name: "Provision EC2 Instance"
+        job_type: "run"
+        inventory: "AWS"
+        project: "Git Ops"
+        playbook: "provision.yml"
+        credentials: 
+          - "AWS"
+        limit: "tag_app_{{ app }}"
+        state: "present"
+        tower_username: "{{ tower_username }}"
+        tower_password: "{{ tower_password }}"
+        tower_host: https://localhost
+        tower_verify_ssl: false
