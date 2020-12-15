@@ -144,3 +144,16 @@
         tower_password: "{{ tower_password }}"
         tower_host: https://localhost
         tower_verify_ssl: false
+
+    - name: Create Provision and Deploy workflow
+      awx.awx.tower_workflow_job_template:
+        name: Provision and Deploy App 
+        state: present
+        description: Chain together workflow for provisioning, building and deploying the app
+        organization: Default 
+        schema: "{{ lookup('file', 'workflow_template.yml') }}"
+        tower_username: "{{ tower_username }}"
+        tower_password: "{{ tower_password }}"
+        tower_host: https://localhost
+        tower_verify_ssl: false
+        
