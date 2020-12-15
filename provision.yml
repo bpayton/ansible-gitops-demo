@@ -40,12 +40,6 @@
             region: "{{ region }}"
             tags: 
               app: "{{ app }}"
-          register: ec2_instance 
-
-        - name: Register instance ID to localhost facts
-          set_fact:
-            aws_instance_id: "{{ ec2_instance.instances[0].instance_id }}"
-            cacheable: yes
           
       tags: ['never', 'provision']
 
@@ -58,6 +52,6 @@
             aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
             aws_secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
             filters:
-              app: "{{ app }}"
+              "tag:app": "{{ app }}"
 
       tags: ['never', 'deprovision']
