@@ -145,15 +145,63 @@
         tower_host: https://localhost
         tower_verify_ssl: false
 
-    - name: Create Provision and Deploy workflow
+    - name: Create Provision and Deploy workflow template
       awx.awx.tower_workflow_job_template:
         name: Provision and Deploy App 
         state: present
         description: Chain together workflow for provisioning, building and deploying the app
         organization: Default 
-        schema: "{{ lookup('file', 'workflow_template.yml') }}"
         tower_username: "{{ tower_username }}"
         tower_password: "{{ tower_password }}"
         tower_host: https://localhost
         tower_verify_ssl: false
-        
+
+    - name: Add Deploy step to workflow
+      awx.awx.tower_workflow_job_template_node:
+        identifier: gitops-deploy-node
+        workflow: Provision and Deploy App 
+        unified_job_template: Deploy App 
+        organization: Default 
+        tower_username: "{{ tower_username }}"
+        tower_password: "{{ tower_password }}"
+        tower_host: https://localhost
+        tower_verify_ssl: false
+
+    - name: Add build step to workflow 
+      awx.awx.tower_workflow_job_template_node:
+        identifier: gitops-build-node
+        workflow: Provision and Deploy App 
+        unified_job_template: Build App 
+        organization: Default 
+        success_nodes:
+          - gitops-deploy-node 
+        tower_username: "{{ tower_username }}"
+        tower_password: "{{ tower_password }}"
+        tower_host: https://localhost
+        tower_verify_ssl: false
+
+    - name: add provision step to workflow 
+      awx.awx.tower_workflow_job_template_node:
+        identifier: gitops-provision-node
+        workflow: Provision and Deploy App 
+        unified_job_template: Provision EC2 Instance 
+        organization: Default 
+        success_nodes:
+          - gitops-build-node 
+        tower_username: "{{ tower_username }}"
+        tower_password: "{{ tower_password }}"
+        tower_host: https://localhost
+        tower_verify_ssl: false
+
+    - name: add deprovision step to workflow 
+      awx.awx.tower_workflow_job_template_node:
+        identifier: gitops-deprovision-node
+        workflow: Provision and Deploy App 
+        unified_job_template: Deprovision EC2 Instance   
+        organization: Default 
+        success_nodes:
+          - gitops-provision-node
+        tower_username: "{{ tower_username }}"
+        tower_password: "{{ tower_password }}"
+        tower_host: https://localhost
+        tower_verify_ssl: false
