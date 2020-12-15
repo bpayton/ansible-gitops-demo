@@ -4,4 +4,4 @@ name: Jerry
 
 # static, please don't change these unless you want a challenge
 region: us-east-1 
-app: ansible-devops-demo-{{ name }}
+app: ansible_devops_demo_{{ name }}

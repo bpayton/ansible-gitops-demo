@@ -1,0 +1,28 @@
+--- 
+- name: Initialize variables
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: import variables
+      include_vars: 
+        file: group_vars/all.yml
+        name: stuff
+
+    - name: print variables 
+      debug:
+        var: group
+
+    - name: set variable fact
+      set_fact:
+        host: localhost
+        cacheable: yes
+
+- name: debug playbook to play with variables
+  hosts: "{{ hostvars['localhost']['host'] }}"
+  connection: local     
+  tasks:
+    - name: show value of variables 
+      debug:
+        msg: "{{ hostvars['localhost']['stuff']['group_name'] }}"
+      vars:
+        test: pizza
