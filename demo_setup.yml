@@ -26,14 +26,14 @@
     - name: Create AWS Credential 
       awx.awx.tower_credential:
         state: present
-        name: AWS
+        name: AWS Console
         description: AWS Credential from saml 
         organization: Default 
-        credential_type: aws
+        credential_type: Amazon Web Services
         inputs:
-          AWS_ACCESS_KEY_ID: "{{ AWS_ACCESS_KEY_ID }}"
-          AWS_SECRET_ACCESS_KEY: "{{ AWS_SECRET_ACCESS_KEY }}"
-          AWS_SECURITY_TOKEN: "{{ AWS_SECURITY_TOKEN }}"
+          access_key: "{{ AWS_ACCESS_KEY_ID }}"
+          secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
+          security_token: "{{ AWS_SECURITY_TOKEN }}"
         tower_username: "{{ tower_username }}"
         tower_password: "{{ tower_password }}"
         tower_host: https://localhost
@@ -45,7 +45,7 @@
         name: AWS Machine 
         description: AWS Machine Credential 
         organization: Default 
-        credential_type: machine 
+        credential_type: Machine 
         inputs:
           username: ec2-user 
           ssh_key_data: "{{ ssh_key }}"
@@ -72,6 +72,7 @@
         description: AWS inventory source 
         inventory: AWS  
         credential: AWS  
+        host_filter: "tag:app={{ app }}"
         overwrite: True  
         update_on_launch: True  
         source: ec2  
@@ -89,7 +90,7 @@
         playbook: "provision.yml"
         credentials: 
           - "AWS"
-        job_tags: provision
+        job_tags: "provision,"
         state: "present"
         tower_username: "{{ tower_username }}"
         tower_password: "{{ tower_password }}"
@@ -114,7 +115,7 @@
 
     - name: Create build template
       awx.awx.tower_job_template:
-        name: "Provision EC2 Instance"
+        name: "Build App"
         job_type: "run"
         inventory: "AWS"
         project: "Git Ops"
