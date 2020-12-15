@@ -1,6 +1,6 @@
 ---
 - name: Deploy application
-  hosts: "{{ hostvars['localhost']['aws_instance_id'] }}"
+  hosts: all
   become: yes
   gather_facts: yes
   tasks:
