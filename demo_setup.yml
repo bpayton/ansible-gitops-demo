@@ -31,8 +31,8 @@
         organization: Default 
         credential_type: Amazon Web Services
         inputs:
-          access_key: "{{ AWS_ACCESS_KEY_ID }}"
-          secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
+          username: "{{ AWS_ACCESS_KEY_ID }}"
+          password: "{{ AWS_SECRET_ACCESS_KEY }}"
           security_token: "{{ AWS_SECURITY_TOKEN }}"
         tower_username: "{{ tower_username }}"
         tower_password: "{{ tower_password }}"
@@ -68,10 +68,10 @@
     - name: Create AWS Inventory Source
       awx.awx.tower_inventory_source:
         state: present  
-        name: AWS Inventory 
+        name: AWS 
         description: AWS inventory source 
         inventory: AWS  
-        credential: AWS  
+        credential: AWS Console  
         host_filter: "tag:app={{ app }}"
         overwrite: True  
         update_on_launch: True  
@@ -89,7 +89,7 @@
         project: "Git Ops"
         playbook: "provision.yml"
         credentials: 
-          - "AWS"
+          - "AWS Console"
         job_tags: "provision,"
         state: "present"
         tower_username: "{{ tower_username }}"
@@ -105,7 +105,7 @@
         project: "Git Ops"
         playbook: "provision.yml"
         credentials: 
-          - "AWS"
+          - "AWS Console"
         job_tags: deprovision
         state: "present"
         tower_username: "{{ tower_username }}"
@@ -121,7 +121,7 @@
         project: "Git Ops"
         playbook: "provision.yml"
         credentials: 
-          - "AWS"
+          - "AWS Machine"
         limit: "tag_app_{{ app }}"
         state: "present"
         tower_username: "{{ tower_username }}"
