@@ -38,7 +38,8 @@
             image_id: "{{ image }}"
             instance_type: t2.micro
             region: "{{ region }}"
-            tags: "{{ app }}"
+            tags: 
+              app: "{{ app }}"
           register: ec2_instance 
 
         - name: Register instance ID to localhost facts
