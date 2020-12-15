@@ -72,7 +72,7 @@
         description: AWS inventory source 
         inventory: AWS  
         credential: AWS Console  
-        host_filter: "tag:app={{ app }}"
+        # instance_filters: "tag:app={{ app }}"
         overwrite: True  
         update_on_launch: True  
         source: ec2  
@@ -90,7 +90,7 @@
         playbook: "provision.yml"
         credentials: 
           - "AWS Console"
-        job_tags: "provision,"
+        job_tags: "provision"
         state: "present"
         tower_username: "{{ tower_username }}"
         tower_password: "{{ tower_password }}"
@@ -99,14 +99,14 @@
 
     - name: Create deprovisioning template
       awx.awx.tower_job_template:
-        name: "Provision EC2 Instance"
+        name: "Deprovision EC2 Instance"
         job_type: "run"
         inventory: "AWS"
         project: "Git Ops"
         playbook: "provision.yml"
         credentials: 
           - "AWS Console"
-        job_tags: deprovision
+        job_tags: "deprovision"
         state: "present"
         tower_username: "{{ tower_username }}"
         tower_password: "{{ tower_password }}"
@@ -119,7 +119,23 @@
         job_type: "run"
         inventory: "AWS"
         project: "Git Ops"
-        playbook: "provision.yml"
+        playbook: "build.yml"
+        credentials: 
+          - "AWS Machine"
+        limit: "tag_app_{{ app }}"
+        state: "present"
+        tower_username: "{{ tower_username }}"
+        tower_password: "{{ tower_password }}"
+        tower_host: https://localhost
+        tower_verify_ssl: false
+
+    - name: Create deploy template
+      awx.awx.tower_job_template:
+        name: "Deploy App"
+        job_type: "run"
+        inventory: "AWS"
+        project: "Git Ops"
+        playbook: "deploy.yml"
         credentials: 
           - "AWS Machine"
         limit: "tag_app_{{ app }}"
