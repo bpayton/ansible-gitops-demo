@@ -1,4 +1,12 @@
 --- 
+- name: initialize variables
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Variables initializing
+      debug: 
+        var: "{{ hostvars['localhost']['aws_instance_id'] }}"
+        
 - name: Build simple nodejs app
   hosts: "{{ hostvars['localhost']['aws_instance_id'] }}" # tag_Environment_Testing
   become: yes
