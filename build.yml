@@ -1,6 +1,6 @@
 --- 
 - name: Build simple nodejs app
-  hosts: tag_Environment_Testing
+  hosts: "tag_{{ instance_tags.keys()[0] }}_{{ instance_tags.app }}" # tag_Environment_Testing
   become: yes
   tasks:
     - name: Ensure nodejs and git are installed
