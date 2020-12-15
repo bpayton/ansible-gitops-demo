@@ -4,3 +4,4 @@ tower_password: "ansible"
 AWS_ACCESS_KEY_ID: somethingsecret
 AWS_SECRET_ACCESS_KEY: something even more secret
 AWS_SECURITY_TOKEN: only needed with our central IT AWS acct.
+ssh_key: insert your private key here
