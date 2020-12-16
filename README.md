@@ -15,7 +15,7 @@ An existing security group in AWS with port 22 and 80 open (default should be fi
 ## Steps to setup demo - the automated version, finally!
 1. SSH to your tower host, or use the included Code-Server VS Code instance provided by RHPDS
 2. Clone this repo into your studentX home folder 
-3. update login_info.yml with your ansible password, and your AWS keys, security token and the ssh key
+3. Rename `login_info_template.yml` to `login_info.yml` and fill in your Ansible admin password as well as your AWS keys, security token and the ssh key
 4. update group_vars/all.yml with your name instead of mine 
 5. run `ansible-galaxy collection install awx.awx` to get the needed tools to setup the demo
 6. Run `ansible-playbook demo_setup.yml` to create the project, inventories, credentials, playbooks and a basic workflow.
