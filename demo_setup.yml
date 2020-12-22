@@ -10,6 +10,12 @@
           - 'private.yml'
           - 'login_info.yml'
 
+    - name: Make sure Python module for AWS is installed 
+      pip:
+        name: boto3
+        state: present 
+        executable: pip3.6
+
     - name: Create Ansible Git Ops demo Tower Project
       awx.awx.tower_project:
         name: Git Ops
@@ -43,6 +49,10 @@
       amazon.aws.ec2_key: 
         name: "{{ aws_key_name }}"
         state: present
+        region: "{{ region }}"
+        aws_access_key: "{{ AWS_ACCESS_KEY_ID }}"
+        aws_secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
+        security_token: "{{ AWS_SECURITY_TOKEN }}"
       register: ssh_key
 
     - name: Create AWS Machine Credential 

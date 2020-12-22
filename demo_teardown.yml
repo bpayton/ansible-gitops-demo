@@ -43,6 +43,10 @@
       amazon.aws.ec2_key: 
         name: "{{ aws_key_name }}"
         state: absent
+        region: "{{ region }}"
+        aws_access_key: "{{ AWS_ACCESS_KEY_ID }}"
+        aws_secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
+        security_token: "{{ AWS_SECURITY_TOKEN }}"
       register: ssh_key
 
     - name: Delete AWS Machine Credential 
@@ -66,22 +70,6 @@
         description: AWS Inventory 
         organization: Default 
         state: absent 
-        tower_username: "{{ tower_username }}"
-        tower_password: "{{ tower_password }}"
-        tower_host: https://localhost
-        tower_verify_ssl: false
-
-    - name: Delete AWS Inventory Source
-      awx.awx.tower_inventory_source:
-        state: absent  
-        name: AWS 
-        description: AWS inventory source 
-        inventory: AWS  
-        credential: AWS Console  
-        # instance_filters: "tag:app={{ app }}"
-        overwrite: True  
-        update_on_launch: True  
-        source: ec2  
         tower_username: "{{ tower_username }}"
         tower_password: "{{ tower_password }}"
         tower_host: https://localhost
@@ -166,7 +154,8 @@
       community.aws.ec2_instance:
         state: absent
         region: "{{ region }}"
-        aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
-        aws_secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
+        aws_access_key: "{{ AWS_ACCESS_KEY_ID }}"
+        aws_secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
+        security_token: "{{ AWS_SECURITY_TOKEN }}"
         filters:
           "tag:app": "{{ app }}"
