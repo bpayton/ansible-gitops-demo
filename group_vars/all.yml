@@ -1,6 +1,7 @@
 ---
-# make sure to update this with your name or something unique to you
+# update this with your name or something unique to you, and your ec2 key pair name 
 name: Jerry
+aws_key_name: gitops-demo-key-{{ name }}
 
 # static, please don't change these unless you want a challenge
 region: us-east-1 

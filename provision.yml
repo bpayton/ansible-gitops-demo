@@ -4,7 +4,6 @@
   connection: local
   gather_facts: false
   vars:
-    aws_key_name: jcorum
     image: ami-096fda3c22c1c990a
     id: "github-demo-app-{{ name }}"
     sec_group: "{{ id }}-sec"

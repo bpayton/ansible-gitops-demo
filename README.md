@@ -17,7 +17,7 @@ An existing security group in AWS with port 22 and 80 open (default should be fi
 2. Clone this repo into your studentX home folder 
 3. Rename `login_info_template.yml` to `login_info.yml` and fill in your Ansible admin password as well as your AWS keys, security token and the ssh key
 4. update group_vars/all.yml with your name instead of mine 
-5. run `ansible-galaxy collection install awx.awx` to get the needed tools to setup the demo
+5. run `ansible-galaxy collection install -r collections/requirements.yml` to get the needed tools to setup the demo
 6. Run `ansible-playbook demo_setup.yml` to create the project, inventories, credentials, playbooks and a basic workflow.
 7. On the workflow template, enable the webhook and select the GitHub type, then save, it will generate the url and token you'll need in the next step.  
 8. On the [simple-web-app](https://github.com/corumj/simple-demo-app) git repo (fork it so you can make changes to it yourself) setup a webhook according to Github's instructions and copy and paste the webhook URL for your Tower Webhook.  Be prepared, it will kick of the webhook instantly as a test, make sure in the response you get a `{"message": "Job queued."}` response and check in Tower to make sure the workflow is running.
