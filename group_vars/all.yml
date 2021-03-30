@@ -1,6 +1,6 @@
 ---
 # update this with your name or something unique to you, and your ec2 key pair name 
-name: Jerry
+name: Brian
 aws_key_name: gitops-demo-key-{{ name }}
 
 # static, please don't change these unless you want a challenge
