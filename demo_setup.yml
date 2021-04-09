@@ -26,7 +26,7 @@
         tower_host: https://localhost
         tower_verify_ssl: false
         scm_type: git 
-        scm_url: https://github.com/corumj/ansible-gitops-demo.git
+        scm_url: https://github.com/bpayton/ansible-gitops-demo.git
         scm_update_on_launch: yes 
 
     - name: Create AWS Credential 
